@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE project>
 <jdoconfig xmlns="http://java.sun.com/xml/ns/jdo/jdoconfig"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:noNamespaceSchemaLocation="http://java.sun.com/xml/ns/jdo/jdoconfig">

@@ -5,6 +5,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="lib" path="war/WEB-INF/lib/morph-1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="war/WEB-INF/lib/russian-1.0.jar"/>
-	<classpathentry kind="lib" path="/home/strike/eclipse/thrigram/war/WEB-INF/lib/english-1.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/english-1.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-api-1.5.6.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/test1.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

@@ -60,18 +60,37 @@
   })();
 
 </script>
+<script type="text/javascript">
+function check(){
+	if ( document.getElementById('dat').checked ) {
+		document.getElementById('form').action = '/api';
+	}
+}
+</script>
+<style>
+.hide {
+ display: none;
+ }
+</style>
 </head>
   
 <body>
   	<h1>Term</h1>
   	<div id="table"></div>
-   <form action="/term.jsp" method="post">
+   <form  id="form" action="/term.jsp" method="post">
     	<textarea name='txt' ><%if (text != null) {out.print(text);	}%></textarea><br />
  
     	
     	<input type="radio" name="lg" value="EN" <% if (lang.equals("EN")) { out.print("checked='checked'"); } %> />EN<br />
 		<input type="radio" name="lg" value="RU" <% if (lang.equals("RU")) { out.print("checked='checked'"); } %> />RU<br />
-    	<button type='submit'>Send</button>
+    	
+   Output: <br />
+<input type="radio" name="output" value="1" checked='checked' />Table<br />
+<input id="dat" type="radio" name="output" value="0" />.dat<br /> 	
+    	
+<input class="hide" type="text" name="type" value="presentation" />
+<input class="hide" type="text" name="type2" value="term" />
+<button type='submit' onclick="check();">Send</button>
 	</form>
 </body>
 </html>

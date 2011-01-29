@@ -16,6 +16,8 @@ public class Term {
 	private String lang;
 	// if 0 then html, 1 - dat
 	private int output = 0;
+	
+	private String debug = "!";
 
 	public void setLang(String lang) {
 		if (lang.equals("EN")) {
@@ -24,8 +26,12 @@ public class Term {
 			this.lang = "RU";
 		}
 	}
+	
+	public String debug(){
+		return this.debug;
+	}
 
-	public void setText(String text) {
+	public boolean setText(String text) {
 		// RU or EN
 		String regexp;
 		if (this.lang == "RU") {
@@ -37,9 +43,18 @@ public class Term {
 		// this.term =
 		// text.toLowerCase().replaceAll("[^a-zабвгдежзиклмнопрстуфхцчшщъыьэюя]+",
 		// " ").split(" ");
+		String cache = text.toLowerCase().replaceAll(regexp," ").trim();
+		//this.debug += "~" + cache.length() + "~\n";
+		if (cache.length() == 0){
+			//this.debug += "yes\n";
+			return false;
+		} else {
 		this.term = text.toLowerCase().replaceAll(regexp,
 				" ").trim().split(" ");
 		this.len = this.term.length;
+		
+		}		
+		return true;
 	}
 
 	public void setOutput(int i) {

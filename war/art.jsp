@@ -49,11 +49,22 @@ function check(){
   	<div id="table"></div>
   	<pre><%
 	if (text != null) {
+		String[] textM = text.split("\n");		
 
-ART art = new ART(text,lang); 
- out.print(art.run()); 
+ART art = new ART(textM[0],lang); 
+out.print(art.test()+"<br />"); 
+out.print(art.run());
+out.print("<br />");
+for (int i = 1; i < textM.length; i++){
+	art.reSetText(textM[1], lang);
+	 out.print(art.run());
+	 out.print("<br />");
+}
+
+
  }
  %></pre>
+ 
    <form  id="form" action="/art.jsp" method="post">
     	<textarea name='txt' ><%if (text != null) {out.print(text);	}%></textarea><br />
  

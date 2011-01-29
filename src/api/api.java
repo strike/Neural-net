@@ -9,6 +9,17 @@ import presentation.*;
 public class api extends HttpServlet {
 
 	private static final long serialVersionUID = -5758497479639743060L;
+	
+	public void doGet(HttpServletRequest req, HttpServletResponse resp){
+		resp.setContentType("text/html");
+		resp.setCharacterEncoding("UTF-8");
+		try {
+			resp.getWriter().println("<html><body>API help is not avalible now</body></html>");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
     throws IOException {		
@@ -19,11 +30,10 @@ public class api extends HttpServlet {
 	
 		
 		if (req.getParameter("type").equals("presentation")){
-			if (req.getParameter("type2").equals("thrigram")){
+			if (req.getParameter("subtype").equals("thrigram")){
 				Thrigram thrigram = new presentation.Thrigram();
-				thrigram.setLang(req.getParameter("lg"));
-				//TODO Make possible use file
-				try {
+				thrigram.setLang(req.getParameter("lg"));				
+				/*try {
 				    BufferedReader in = new BufferedReader(new FileReader("/home/strike/eclipse/thrigram/war/test"));
 				    String str;
 				    while ((str = in.readLine()) != null) {
@@ -31,29 +41,23 @@ public class api extends HttpServlet {
 				    }
 				    in.close();
 				} catch (IOException e) {
-				} 
+				} */
 				thrigram.setText(req.getParameter("txt"));
 				//thrigram.setText(txt);
 				thrigram.setOutput(1);
+				thrigram.generate();
+				//resp.getWriter().println(thrigram.debug());
 				resp.getWriter().println(thrigram.getResult());
 				
 			} else {
-				if (req.getParameter("type2").equals("term")){
-					Term thrigram = new presentation.Term();
-					thrigram.setLang(req.getParameter("lg"));
-					//thrigram.setText(req.getParameter("txt"));
-					try {
-					    BufferedReader in = new BufferedReader(new FileReader("/home/strike/eclipse/thrigram/war/test"));
-					    String str;
-					    while ((str = in.readLine()) != null) {
-					        txt += str + "\n";
-					    }
-					    in.close();
-					} catch (IOException e) {
-					} 		
-					thrigram.setText(txt);
-					thrigram.setOutput(1);
-					resp.getWriter().println(thrigram.getResult());
+				if (req.getParameter("subtype").equals("term")){
+					Term Term = new presentation.Term();
+					Term.setLang(req.getParameter("lg"));
+					if (Term.setText(req.getParameter("txt"))){
+						Term.setOutput(1);						
+						resp.getWriter().println(Term.getResult());
+					}
+					//resp.getWriter().println(Term.debug());
 				}
 				
 			}

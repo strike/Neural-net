@@ -41,6 +41,7 @@
 					thrigram.setText(text);
 					thrigram.generate();
 					String a = thrigram.getResult();
+					//a += "!" + thrigram.test();
 					out.println(a);%>
  
     
@@ -106,9 +107,10 @@ Output: <br />
 <input id="dat" type="radio" name="output" value="0" />.dat<br />
 
 <input class="hide" type="text" name="type" value="presentation" />
-<input class="hide" type="text" name="type2" value="thrigram" />
+<input class="hide" type="text" name="subtype" value="thrigram" />
 <button type='submit' onclick="check();">Send</button>
 
+    
 </form>
 </body>
 </html>

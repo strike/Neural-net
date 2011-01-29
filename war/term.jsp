@@ -89,7 +89,7 @@ function check(){
 <input id="dat" type="radio" name="output" value="0" />.dat<br /> 	
     	
 <input class="hide" type="text" name="type" value="presentation" />
-<input class="hide" type="text" name="type2" value="term" />
+<input class="hide" type="text" name="subtype" value="term" />
 <button type='submit' onclick="check();">Send</button>
 	</form>
 </body>

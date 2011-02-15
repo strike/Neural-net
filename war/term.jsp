@@ -29,12 +29,13 @@
       var data = new google.visualization.DataTable();
      data.addColumn('string', 'Text');
      data.addColumn('number', 'Weight');
-     // data.addColumn('number', 'Normalized (%)');
+     data.addColumn('number', 'Normalized (%)');
      <%presentation.Term term = new presentation.Term();
 				term.setLang(lang);
 				term.setText(text);
-				String a = term.getResult();
-				out.println(a);%>
+				out.println(term.getResult());				
+				
+				%>
 		    
 		      // Create and draw the visualization.
 		      visualization = new google.visualization.Table(document.getElementById('table'));

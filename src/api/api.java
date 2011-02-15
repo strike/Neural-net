@@ -25,7 +25,7 @@ public class api extends HttpServlet {
     throws IOException {		
 		resp.setContentType("text/plain");
 		resp.setCharacterEncoding("UTF-8");
-		String txt = "";
+		//String txt = "";
 
 	
 		

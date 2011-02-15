@@ -16,7 +16,7 @@ public class Term {
 	private String lang;
 	// if 0 then html, 1 - dat
 	private int output = 0;
-	
+
 	private String debug = "!";
 
 	public void setLang(String lang) {
@@ -26,8 +26,8 @@ public class Term {
 			this.lang = "RU";
 		}
 	}
-	
-	public String debug(){
+
+	public String debug() {
 		return this.debug;
 	}
 
@@ -40,20 +40,17 @@ public class Term {
 			regexp = "[^a-z]+";
 		}
 
-		// this.term =
-		// text.toLowerCase().replaceAll("[^a-zабвгдежзиклмнопрстуфхцчшщъыьэюя]+",
-		// " ").split(" ");
-		String cache = text.toLowerCase().replaceAll(regexp," ").trim();
-		//this.debug += "~" + cache.length() + "~\n";
-		if (cache.length() == 0){
-			//this.debug += "yes\n";
+		String cache = text.toLowerCase().replaceAll(regexp, " ").trim();
+		// this.debug += "~" + cache.length() + "~\n";
+		if (cache.length() == 0) {
+			// this.debug += "yes\n";
 			return false;
 		} else {
-		this.term = text.toLowerCase().replaceAll(regexp,
-				" ").trim().split(" ");
-		this.len = this.term.length;
-		
-		}		
+			this.term = text.toLowerCase().replaceAll(regexp, " ").trim()
+					.split(" ");
+			this.len = this.term.length;
+
+		}
 		return true;
 	}
 
@@ -63,6 +60,7 @@ public class Term {
 
 	public String getResult() {
 		int z = 0;
+		double sum = 0;
 		String r = "";
 		Map<String, Integer> termarray = new HashMap<String, Integer>();
 		Object cache;
@@ -80,7 +78,7 @@ public class Term {
 
 		for (int i = 0; i < this.len; i++) {
 			// cache = luceneMorph.getNormalForms(this.term[i]);
-
+			sum++;
 			cache = luceneMorph.getNormalForms(
 					this.term[i].replaceAll("ing$", "")).get(0).toString();
 			if (termarray.containsKey(cache)) {
@@ -109,9 +107,10 @@ public class Term {
 			if (this.output == 0) {
 				r += "data.setCell(" + z + ",0,'" + key + "');\n";
 				r += "data.setCell(" + z + ",1," + value + ");\n";
+				r += "data.setCell(" + z + ",2," + value/sum + ");\n";
 				z++;
 			} else {
-				r += key + "\t" + value + "\n";
+				r += "\"" + key + "\"\t" + value + "\n";
 			}
 
 		}

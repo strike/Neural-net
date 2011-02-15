@@ -30,18 +30,7 @@
   })();
 
 </script>
-<script type="text/javascript">
-function check(){
-	if ( document.getElementById('dat').checked ) {
-		document.getElementById('form').action = '/api';
-	}
-}
-</script>
-<style>
-.hide {
- display: none;
- }
-</style>
+
 </head>
   
 <body>
@@ -54,10 +43,12 @@ function check(){
 ART art = new ART(textM[0],lang); 
 out.print(art.test()+"<br />"); 
 out.print(art.run());
+out.print("!" + art.debug());
 out.print("<br />");
 for (int i = 1; i < textM.length; i++){
-	art.reSetText(textM[1], lang);
+	art.reSetText(textM[i], lang);
 	 out.print(art.run());
+	 out.print("!" + art.debug());
 	 out.print("<br />");
 }
 

@@ -38,11 +38,11 @@
      data.addColumn('number', 'Normalized (%)');
      <%presentation.Thrigram thrigram = new presentation.Thrigram();
 					thrigram.setLang(lang);
+					//thrigram.setOutput(1);					
 					thrigram.setText(text);
-					thrigram.generate();
-					String a = thrigram.getResult();
-					//a += "!" + thrigram.test();
-					out.println(a);%>
+					thrigram.generate();						
+					out.println(thrigram.getResult());
+					%>
  
     
       // Create and draw the visualization.

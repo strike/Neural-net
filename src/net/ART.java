@@ -1,8 +1,5 @@
 package net;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.*;
 
 import presentation.*;
@@ -18,6 +15,10 @@ public class ART {
 	private final static double P = 0.01;
 	private final static double Lambda = 0.75;
 	private String test;
+	private String debug = "";
+	
+	private double Smax = -1;
+	private int Vnear = -1;
 
 	private void getDump() {
 		try {
@@ -36,12 +37,16 @@ public class ART {
 		} catch (IOException e) {
 		}
 	}
+	
+	public String debug(){
+		return this.debug;
+	}
 
 	public String run() {
 		this.test = "";
 		// побольше
 
-		getDump();
+		//getDump();
 		String out = "";
 		if (this.F2n == 0) {
 			// 19			
@@ -55,11 +60,20 @@ public class ART {
 			while (function1());
 
 		}
-		
+		this.debug += "<b>тут ";
 		for (int i = 0; i < this.F2n; i++) {
-			double lambda =  mod(multiplyVector(this.D, this.F2[i]));	
-			out += "кластер" + lambda + "!<br />";
+			this.debug+= "Заход " + i + "  ";
+		
+			double lambda =  mod(multiplyVector(this.D, this.F2[i]));
+			//double skal = lambda * multiplyVector(this.D, this.F2[i]);
+			//for (int j = 0; j < this.F2[i].length; j++){
+			//	this.F2[i][j] = skal + (1- lambda)*this.F2[i][j];	
+
+			//}
+			//this.debug += "D " + sumVector(this.D) + " F2[i]" + sumVector(this.F2[i]) + " = " +  multiplyVector(this.D, this.F2[i]) + "<br />";
+			out += "кластер " + (i+1) + " " + String.format("%f", lambda) + "!<br />";
 		}
+		this.debug += "</b>";
 		//out += "!!!" + this.F2n + "<br />";
 		/*for (int i = 0; i < this.F2n; i++) {
 			for (int j = 0; j < this.F2[i].length; j++){
@@ -82,8 +96,7 @@ public class ART {
 	}
 
 	private boolean function1() {
-		double Smax = -1;
-		int Vnear = -1;
+
 		for (int i = 0; i < this.F2n; i++) {
 			if (isActive(i)) {
 				double Sij = multiplyVector(this.D, this.F2[i]);
@@ -94,18 +107,18 @@ public class ART {
 				}
 			}
 		}
-		if (mod((multiplyVector(this.F2[Vnear], this.D)))
-				/ (ART.B + mod(sumVector(this.F2[Vnear]))) 
+		if (mod((multiplyVector(this.F2[this.Vnear], this.D)))
+				/ (ART.B + mod(sumVector(this.F2[this.Vnear]))) 
 				< mod(sumVector(this.D))
 				/ (ART.B + this.D.length)) {
 			this.F2[this.F2n] = this.D;
 			this.F2n++;
 			this.test += "!aa!";
 		} else {
-			double Sij = mod(multiplyVector(this.D, this.F2[Vnear]));
+			double Sij = mod(multiplyVector(this.D, this.F2[this.Vnear]));
 			// 14
 			if (Sij < ART.P) {
-				unactiveF2(Vnear);
+				unactiveF2(this.Vnear);
 				if (isF2haveActiveVectors()){
 					return true;
 				} else {
@@ -115,18 +128,18 @@ public class ART {
 				}
 			} else {
 				double sum = 0; // 16
-				double skal = ART.Lambda * multiplyVector(this.D, this.F2[Vnear]);
-				for (int i = 0; i < this.F2[Vnear].length; i++){
-					this.F2[Vnear][i] = skal + (1-ART.Lambda)*this.F2[Vnear][i];
+				double skal = ART.Lambda * multiplyVector(this.D, this.F2[this.Vnear]);
+				for (int i = 0; i < this.F2[this.Vnear].length; i++){
+					this.F2[this.Vnear][i] = skal + (1-ART.Lambda)*this.F2[this.Vnear][i];
 					// 16
-					sum += this.F2[Vnear][i]*this.F2[Vnear][i];
+					sum += this.F2[this.Vnear][i]*this.F2[this.Vnear][i];
 
 				}
 				// Normalize 16
 				double modVector = Math.sqrt(sum);
 
-				for (int i = 0; i < this.F2[Vnear].length; i++){
-					this.F2[Vnear][i] = this.F2[Vnear][i] / modVector;
+				for (int i = 0; i < this.F2[this.Vnear].length; i++){
+					this.F2[this.Vnear][i] = this.F2[this.Vnear][i] / modVector;
 				}
 			}
 		}
@@ -183,7 +196,7 @@ public class ART {
 		term.setText(text);
 		term.generate();
 		this.D = term.getResultS();
-		this.max = term.getMax();
+		this.debug = "";
 	}
 
 	public ART(final String text, final String lang) {

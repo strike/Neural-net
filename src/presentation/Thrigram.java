@@ -11,9 +11,9 @@ public class Thrigram {
 	private int N = 3;
 	// Number of char
 	private int M;
-	private int z = 0;
+
 	// if 0 then html, 1 - dat
-	private int output = 0;
+	private boolean output = true;
 	private double sumall = 0;
 
 	private String regexp;
@@ -25,9 +25,6 @@ public class Thrigram {
 	
 	private double[] Vnormal;
 	
-	
-	private String debug = "";
-	
 	public void setLang(String lang) {
 		if (lang.equals("EN")) {
 			lang = "EN";
@@ -36,13 +33,14 @@ public class Thrigram {
 		}
 		String alphabet = "";
 		if (lang == "RU") {
-			alphabet = " абвгдежзиклмнопрстуфхцчшщъыьэюя";
+			alphabet = " абвгдеёжзиклмнопрстуфхцчшщъыьэюяѣi";
 		} else {
 			alphabet = " abcdefghijklmnopqrstuvwxyz";
 		}
 		this.regexp = "[^" + alphabet.trim() + "]+";
 		this.alphabet = alphabet.toCharArray();
 		this.M = this.alphabet.length - 1; // couse space
+		this.max = this.M * this.M * this.M + this.M * this.M + this.M + 1;
 	}
 
 	public void setText(String text) {
@@ -53,12 +51,9 @@ public class Thrigram {
 	}
 
 	public void setOutput(int i) {
-		this.output = i;
+		this.output = false;
 	}
 
-	public String debug(){
-		return this.debug;
-	}
 	/*
 	 * public String Test(String t){ return t; }
 	 * 
@@ -69,10 +64,7 @@ public class Thrigram {
 	 * 
 	 * public int GetCharLen(String t){ return t.toCharArray().length; }
 	 */
-
-	public void generate() {	
-
-		this.max = this.M * this.M * this.M + this.M * this.M + this.M + 1;
+	public void generate() {		
 	
 		this.thr = new String[this.max];		
 		this.V = new double[this.max];
@@ -83,18 +75,18 @@ public class Thrigram {
 		
 		int forcache =  this.len - this.N;
 		for (int i = 0; i <= forcache; i++) {
-			// r += String.valueOf(this.alphabet[1]) + s2c(this.txt[i]);
 			k = this.M * this.M * s2c(this.txt[i]) + this.M
 					* s2c(this.txt[i + 1]) + s2c(this.txt[i + 2]);
+			// need optimize
 			this.thr[k] = String.valueOf(this.txt[i])
 					+ String.valueOf(this.txt[i + 1])
 					+ String.valueOf(this.txt[i + 2]);
 			cache = SpaceCur(this.txt[i], this.txt[i + 1], this.txt[i + 2]);
 			isUse[k] = true;
 			this.V[k] += cache;
-			this.sumall += cache*cache;
+			this.sumall += cache;
 			//this.debug += this.txt[i]  + "=" + s2c(this.txt[i]) + "  " +  s2c(this.txt[i+1]) + "  " + s2c(this.txt[i+2]) + "\n";
-			this.debug += k + "  " +  this.thr[k] + " " + this.V[k] + " = " + cache + "\n";
+			//this.debug += k + "  " +  this.thr[k] + " " + this.V[k] + " = " + cache + "\n";
 		}
 		
 		normalize();
@@ -102,15 +94,15 @@ public class Thrigram {
 	
 	public String getResult(){
 		String r = "";
-	
-		if (this.output == 0) {			
+		int z = 0;
+		if (this.output) {			
 			for (int i = 0; i < this.max; i++) {
 				if (this.isUse[i]) {				
 					r += "data.setCell(" + z + ",0," + i + ");\n";
 					r += "data.setCell(" + z + ",1,'" + this.thr[i] + "');\n";
 					r += "data.setCell(" + z + ",2," + this.V[i] + ");\n";
 					r += "data.setCell(" + z + ",3," + this.Vnormal[i] + ");\n";
-					this.z++;
+					z++;
 				}
 			}
 			r = "data.addRows(" + z + ");\n" + r;
@@ -121,8 +113,8 @@ public class Thrigram {
 					r += "\"" + this.thr[i] + "\"" + "\t";
 					r += this.V[i] + "\t";
 					r += this.Vnormal[i] + "\n";
-				} else {
-					r += i + "\t" + "!!!" +"\t" + 0 + "\t" + 0 + "\n";
+				//} else {
+				//	r += i + "\t" + "!!!" +"\t" + 0 + "\t" + 0 + "\n";
 				}
 			}
 		}
@@ -131,8 +123,7 @@ public class Thrigram {
 	
 
 	
-	public double[] getResultS(){
-				
+	public double[] getResultS(){				
 		return this.Vnormal;
 	}
 
@@ -141,11 +132,10 @@ public class Thrigram {
 	}
 
 	private void normalize() {
-		this.Vnormal = new double[this.max];
-		double modVector = Math.sqrt(this.sumall);
+		this.Vnormal = new double[this.max];		
 		for (int i =0; i < this.max; i++){
 			if (this.isUse[i]){
-				this.Vnormal[i] = this.V[i]/modVector;
+				this.Vnormal[i] = this.V[i]/this.sumall;
 			}
 		}
 	}
@@ -178,7 +168,6 @@ public class Thrigram {
 				return i;
 			}
 		}
-		// expression
 		return 0;
 	}
 }
